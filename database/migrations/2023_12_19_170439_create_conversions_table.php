@@ -6,25 +6,25 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
-    public function up(): void
-    {
-        Schema::create('conversions', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('user_id')->constrained();
-			$table->enum ('conversion', [ 'B/W', 'PDF', 'BGR'] ) -> default ('B/W');
-			$table->unsignedInteger('count') -> default (0);
+	/**
+	 * Run the migrations.
+	 */
+	public function up(): void
+	{
+		Schema::create('conversions', function (Blueprint $table) {
+			$table->id();
+			$table->foreignUuid('user_id')->constrained();
+			$table->enum('conversion', ['B/W', 'PDF', 'BGR'])->default('B/W');
+			$table->unsignedInteger('count')->default(0);
 			$table->timestamps();
-			});
-    }
+		});
+	}
 
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
-    {
-        Schema::dropIfExists('conversions');
-    }
+	/**
+	 * Reverse the migrations.
+	 */
+	public function down(): void
+	{
+		Schema::dropIfExists('conversions');
+	}
 };
