@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Roles;
+use App\Models\
 
 use Illuminate\Http\Request;
 use Laravel\Sanctum\HasApiTokens;
@@ -39,6 +41,19 @@ class AuthController extends Controller
 				'role' => 'user',
 			]);
 
+			// update the user role
+			$user = User::where('email', $request->email)->first();
+
+			// get the role
+			$role = Roles::where('name', $user->role)->first();
+
+			// assign the role to the user on the role_user table
+			Role::create([
+				'user_id' => $user->id,
+				'role_id' => $role->id,
+			]);
+
+
 			// return a response 
 			return response()->json([
 				'success' => true,
@@ -50,6 +65,37 @@ class AuthController extends Controller
 			return response()->json([
 				'success' => false,
 				'message' => 'User Registration Failed',
+			], 400);
+		}
+	}
+
+	public function role(Request $request)
+	{
+		try {
+			$validator = Validator::make($request->all(), [
+				'role' => 'required|string',
+			]);
+
+			if ($validator->fails()) {
+				return response()->json(['error' => $validator->errors()], 400);
+			}
+
+			// add the role to the database
+			Roles::create([
+				'name' => $request->role,
+			]);
+
+			// return a response 
+			return response()->json([
+				'success' => true,
+				'message' => 'User role updated successfully',
+			], 201);
+		} catch (\Exception $e) {
+			Log::error('User Role Create Failed: ' . $e->getMessage());
+
+			return response()->json([
+				'success' => false,
+				'message' => 'Role Create Failed',
 			], 400);
 		}
 	}
