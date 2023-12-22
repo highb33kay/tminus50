@@ -3,8 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Models\Roles;
-use App\Models\
+use App\Models\Role;
 
 use Illuminate\Http\Request;
 use Laravel\Sanctum\HasApiTokens;
@@ -44,14 +43,14 @@ class AuthController extends Controller
 			// update the user role
 			$user = User::where('email', $request->email)->first();
 
-			// get the role
-			$role = Roles::where('name', $user->role)->first();
+			// Assign the role to the user
+			$role = Role::where('name', $request->role)->first();
+			$user->roles()->attach($role);
 
-			// assign the role to the user on the role_user table
-			Role::create([
-				'user_id' => $user->id,
-				'role_id' => $role->id,
-			]);
+			return response()->json([
+				'success' => true,
+				'message' => 'User created successfully',
+			], 201);
 
 
 			// return a response 
@@ -81,7 +80,7 @@ class AuthController extends Controller
 			}
 
 			// add the role to the database
-			Roles::create([
+			Role::create([
 				'name' => $request->role,
 			]);
 

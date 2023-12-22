@@ -6,8 +6,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 
-class Roles extends Model
+class Role extends Model
 {
+	protected $table = 'roles';
 	use HasFactory, HasUuids;
 
 	/**

@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\Roles;
+use App\Models\Role;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -53,6 +53,6 @@ class User extends Authenticatable
 	 */
 	public function roles(): BelongsToMany
 	{
-		return $this->belongsToMany(Roles::class);
+		return $this->belongsToMany(Role::class);
 	}
 }
